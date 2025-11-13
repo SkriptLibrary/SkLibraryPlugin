@@ -1,0 +1,63 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'xyz.jpenilla.run-paper' version '2.3.1'
+    id 'com.gradleup.shadow' version '9.2.2'
+}
+
+group = 'de.skriptlibrary.SkLibraryAddon'
+version = '0.0.1'
+def targetJavaVersion = 21
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+tasks {
+    runServer {
+        // Configure the Minecraft version for our task.
+        // This is the only required configuration besides applying the plugin.
+        // Your plugin's jar (or shadowJar if present) will be used automatically.
+        minecraftVersion("1.21.8")
+    }
+}
+
+build {
+    dependsOn(shadowJar)
+}
+
+processResources {
+    filter ReplaceTokens, tokens: ["version": project.version ]
+
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+shadowJar {
+    archiveFileName = project.name + "-" + project.version + ".jar"
+    exclude('META-INF/**')
+}
+
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}

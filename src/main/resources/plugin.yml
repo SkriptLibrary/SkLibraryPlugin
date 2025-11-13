@@ -1,0 +1,21 @@
+main: de.skriptlibrary.SkLibraryAddon.SkLibraryAddon
+name: SkLibrary
+prefix: SKLIB
+version: '@version@'
+description: "A Minecraft plugin that lets you download and manage skripts from the SkLibrary."
+api-version: '1.21'
+authors: [ Max54nj ]
+website: https://sklibrary.de
+
+loadbefore:
+  - Skript
+
+commands: 
+  sklibrary:
+    description: Manage you SkLibrary skripts
+    permission: sklibrary.command
+    
+permissions:
+  sklibrary.command:
+    default: op
+    description: Permission to use the SkLibrary main command
