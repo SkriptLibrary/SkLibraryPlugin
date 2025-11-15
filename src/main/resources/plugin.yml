@@ -1,10 +1,10 @@
-main: de.skriptlibrary.SkLibraryAddon.SkLibraryAddon
+main: de.skriptlibrary.SkLibrary.SkLibrary
 name: SkLibrary
 prefix: SKLIB
 version: '@version@'
 description: "A Minecraft plugin that lets you download and manage skripts from the SkLibrary."
 api-version: '1.21'
-authors: [ Max54nj ]
+authors: [ Max54nj, norivane ]
 website: https://sklibrary.de
 
 loadbefore:

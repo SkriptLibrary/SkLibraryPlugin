@@ -6,7 +6,7 @@ plugins {
     id 'com.gradleup.shadow' version '9.2.2'
 }
 
-group = 'de.skriptlibrary.SkLibraryAddon'
+group = 'de.skriptlibrary.SkLibrary'
 version = '0.0.1'
 def targetJavaVersion = 21
 
@@ -18,6 +18,11 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
+    
+    implementation(group: 'org.bstats', name: 'bstats-bukkit', version: '3.1.0')
 }
 
 compileJava {
@@ -30,6 +35,11 @@ tasks {
         // This is the only required configuration besides applying the plugin.
         // Your plugin's jar (or shadowJar if present) will be used automatically.
         minecraftVersion("1.21.8")
+        
+        downloadPlugins {
+            github("SkriptLang", "Skript", "2.13.1", "Skript-2.13.1.jar")
+            modrinth("plugmanx", "3.0.2")
+        }
     }
 }
 
@@ -50,6 +60,9 @@ processResources {
 
 shadowJar {
     archiveFileName = project.name + "-" + project.version + ".jar"
+    
+    relocate("org.bstats", "de.skriptlibrary.SkLibrary.metrics")
+    
     exclude('META-INF/**')
 }
 
